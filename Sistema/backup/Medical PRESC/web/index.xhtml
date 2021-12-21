@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Medical Presc</title>
+    </h:head>
+    <h:body>
+
+        <br/>
+        <br/>
+        <br/>
+        <h1 align="center">
+            <p style="font-size: 36px; font-family: 'Segoe UI', Arial, sans-serif; font-weight: bold; color: #E5322C">Medical <span style="color: #A4C73A">•</span> <span style="font-size: 46px; text-decoration: overline; font-weight: bolder; color: #009641">PRESC</span></p>
+            <p style="font-size: 16px; font-weight: normal; margin-top: -2.4%; margin-bottom: 2.5%; font-family: 'Segoe UI', Arial, sans-serif">Bem-vindo/a ao Sistema de gestão e registro de prescrições médicas.</p>       
+        </h1>
+        
+        <h:form>
+
+            <p:growl showDetail="false"/>
+
+            <h:panelGrid cellspacing="4px" cellpadding="3px" columns="2" style="margin: 0 auto; border: 1px solid #ccc; padding: 1%; background-color: #ddd">
+
+                <p:outputLabel for="inpNome" value="Usuário:"/>
+                <p:inputText id="inpNome" required="true" requiredMessage="O campo 'Username' não pode estar vazio!" value="#{usuarioBean.usuario.username}"/>
+                <p:outputLabel for="inpSenha" value="Senha:"/>
+                <p:password id="inpSenha" required="true" requiredMessage="O campo 'Password' não pode estar vazio!"   value="#{usuarioBean.usuario.password}"/>
+                <h:column/>
+                <p:commandButton icon="fa fa-sign-in" action="#{usuarioBean.logar()}" update="@form" value="&nbsp;Entrar"/>
+
+            </h:panelGrid>
+
+            <br/>
+
+        </h:form>
+    </h:body>
+</html>

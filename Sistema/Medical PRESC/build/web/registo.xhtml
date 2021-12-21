@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:ui="http://xmlns.jcp.org/jsf/facelets" template="template.xhtml"
+             xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <style type="text/css">
+        .panelColumns .panelLinha  {
+            text-align: center;
+        }
+        .tbl1 tr td {
+            width: 240px; padding: 5px; border: 1px solid #aaa;
+        }
+        .tbl1 {
+            margin: 0 auto;
+        }
+    </style>
+
+    <h:form>
+        <div style="padding: 5px; background: #ddd; border: 1px solid #aaa;">
+
+            <p:fieldset legend="Últimos registo" style="background: #eee">
+                <p:panelGrid class="panelForm" styleClass="panelColumns" style="margin: 0 auto;">
+                    <p:row>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="pac" value="PAC:"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="nome" value="Nome:"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="apelido" value="Apelido:"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="sexo" value="Sexo:"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="contacto" value="Contacto:"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="morada" value="Morada:"/>
+                        </p:column>
+                    </p:row>
+                    <p:row class="panelLinha" style="background: #ddd">
+                        <p:column style="background: #eee; border: none">
+                            <p:selectOneMenu style="width: 185px" filter="true" filterMatchMode="startsWith" id="pac" value="#{relatorioBean.relatorio.pacConf}">
+                                <f:selectItems value="#{relatorioBean.pacs}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="nome" style="width: 185px" maxlength="25" disabled="true" value="#{relatorioBean.prescricao.nome}"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="apelido" style="width: 185px" maxlength="25" disabled="true"  value="#{relatorioBean.prescricao.apelido}"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="sexo" style="width: 185px" maxlength="30" disabled="true"  value="#{relatorioBean.prescricao.sexo}"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="contacto" style="width: 185px" maxlength="30" disabled="true"  value="#{relatorioBean.prescricao.contacto}"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="morada" style="width: 185px" maxlength="30" disabled="true"  value="#{relatorioBean.prescricao.morada}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+                <br/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton icon="fa fa-check" value="&nbsp;Confirmar" actionListener="#{relatorioBean.confirmar(relatorioBean.relatorio.pacConf, usuarioBean.usuario.confIdUsuario)}" ajax="true" update="@form"></p:commandButton>
+                        <p:commandButton icon="fa fa-close" value="&nbsp;Cancelar" disabled="#{relatorioBean.relatorio.pacConf == null || relatorioBean.relatorio.pacConf == ''}" actionListener="#{relatorioBean.cancelarX()}" ajax="true" update="@form"></p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br/>
+
+                <p:dataTable id="tblUltimoRegisto" value="#{relatorioBean.medicamentos}" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selectionMode="single" rowKey="#{medicamento.idMedicamento}" rows="5" paginator="true" widgetVar="personTable2" var="medicamento">
+                    
+                    <p:column style="width: 20%" headerText="Prescrição">
+                        <h:outputText value="#{medicamento.medicament}"></h:outputText>
+                    </p:column>
+                    <p:column style="width: 20%" headerText="Posologia">
+                        <h:outputText value="#{medicamento.posologia}"></h:outputText>
+                    </p:column>
+                    <p:column style="width: 20%" headerText="Quantidade">
+                        <h:outputText value="#{medicamento.quantidadeX}"></h:outputText>
+                    </p:column>
+                    <p:column style="width: 20%"  headerText="Aviado">
+                        <p:inputText id="cAviado" disabled="#{medicamento.presc != 'Indisponível'}" style="width: 100%" value="#{medicamento.quantAviado}" />
+                    </p:column>
+                    <p:column style="text-align: center" headerText="Operação" width="100">
+                        <p:commandButton style="font-size: 17px" disabled="#{medicamento.presc != 'Indisponível'}" icon="fa fa-check" action="#{relatorioBean.aviar(medicamento)}" update="@form"/>
+                        <p:commandButton style="font-size: 17px" disabled="#{medicamento.presc == 'Indisponível'}" icon="fa fa-close" action="#{relatorioBean.remover(medicamento)}" update="@form"/>
+                    </p:column>
+                </p:dataTable>
+
+                <br/>
+                <p:toolbar>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton icon="fa fa-save" value="&nbsp;Gravar (Imprimir)" disabled="#{relatorioBean.prescricao.nome == null || relatorioBean.prescricao.nome == ''}" actionListener="#{relatorioBean.print()}" ajax="true" update="@form"></p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br/>
+            </p:fieldset>
+            <br/>
+
+
+
+            <p:fieldset legend="Registo de prescrições" style="background: #eee">
+
+                <p:panelGrid class="panelForm" styleClass="panelColumns">
+                    <p:row>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="pacFiltro" value="PAC:"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="dataInicial" value="A partir de:"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="dataFinal" value="Até:"/>
+                        </p:column>
+                    </p:row>
+                    <p:row class="panelLinha" style="background: #ddd">
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="pacFiltro" style="width: 185px" maxlength="25" value="#{relatorioBean.relatorio.pacFiltro}"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="dataInicial" style="width: 185px" maxlength="30" value="#{relatorioBean.relatorio.dataInicial}"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="dataFinal" style="width: 185px" maxlength="25" value="#{relatorioBean.relatorio.dataFinal}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <br/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton icon="fa fa-search" value="&nbsp;Pesquisar" action="#{relatorioBean.pesquisar()}" ajax="true" update="@form"></p:commandButton>
+                        <p:commandButton icon="fa fa-close" value="&nbsp;Cancelar :: Mostrar tudo" action="#{relatorioBean.cancelar()}" ajax="true" update="@form"></p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br/>
+
+                <p:growl id="messages" showDetail="true" sticky="true"/>
+
+                <p:dataTable id="tblRegisto" value="#{relatorioBean.relatorios}" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selectionMode="single" rowKey="#{relatorio.idPrescricao}" rows="5" paginator="true" widgetVar="personTable" var="relatorio">
+                    <p:column style="text-align: center" headerText="Operação" width="100">
+                        <p:commandButton style="font-size: 17px" icon="fa fa-print" actionListener="#{relatorioBean.printRelat(relatorio, usuarioBean.usuario.confIdUsuario)}" ajax="false" onclick="this.form.target = '_blank'" update="@form"/>
+                        <p:commandButton style="font-size: 17px" icon="fa fa-trash-o" actionListener="#{relatorioBean.deletar(relatorio)}" ajax="true" update="@form">
+                            <p:confirm header="Confirmação" message="Deseja mesmo remover a prescrição médica?" icon="ui-icon-alert">
+                            </p:confirm>
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="&nbsp;Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                            <p:commandButton value="&nbsp;Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-close" />
+                        </p:confirmDialog>
+                    </p:column>
+                    <p:column headerText="Data" sortBy="#{relatorio.data}">
+                        <h:outputText value="#{relatorio.data}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="PAC" sortBy="#{relatorio.pac}">
+                        <h:outputText value="#{relatorio.pac}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Nome" sortBy="#{relatorio.nome}">
+                        <h:outputText value="#{relatorio.nome}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Apelido" sortBy="#{relatorio.apelido}">
+                        <h:outputText value="#{relatorio.apelido}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Sexo" sortBy="#{relatorio.sexo}">
+                        <h:outputText value="#{relatorio.sexo}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="O Clínico" sortBy="#{relatorio.clinico}">
+                        <h:outputText value="#{relatorio.clinico}"></h:outputText>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+            </p:fieldset>
+        </div>
+    </h:form>
+
+</ui:decorate>

@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:ui="http://xmlns.jcp.org/jsf/facelets" template="template.xhtml"
+             xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <style type="text/css">
+        .panelColumns .panelLinha  {
+            text-align: center;
+        }
+        .tbl1 tr td {
+            width: 240px; padding: 5px; border: 1px solid #aaa;
+        }
+        .tbl1 {
+            margin: 0 auto;
+        }
+    </style>
+
+    <h:form>
+        <div style="padding: 5px; background: #ddd; border: 1px solid #aaa;">
+            
+                <p:growl id="messages" showDetail="true" sticky="true"/>
+                
+            <p:fieldset legend="Cadastro de Medicação" style="background: #eee">
+                <p:panelGrid class="panelForm" styleClass="panelColumns">
+                    <p:row>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="presc" value="Prescrição:"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="codPresc" value="Código:"/>
+                        </p:column>
+                    </p:row>
+                    <p:row class="panelLinha" style="background: #ddd">
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="presc" style="width: 185px" maxlength="30" value="#{medicacaoBean.medic.medicacao}"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="codPresc" disabled="#{medicacaoBean.modo_edicaoPresc == true}" style="width: 185px" maxlength="30" value="#{medicacaoBean.medic.codigoPresc}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <br/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton icon="fa fa-save" value="&nbsp;Salvar" action="#{medicacaoBean.adicionarPresc()}" ajax="true" update="@form"></p:commandButton>
+                        <p:commandButton icon="fa fa-close" value="&nbsp;Cancelar" action="#{medicacaoBean.cancelarPresc()}" ajax="true" update="@form"></p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br/>
+                <p:dataTable id="tblPresc" value="#{medicacaoBean.medicacoesPresc}" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selectionMode="single" rowKey="#{medicacaoPresc.idMedicacao}" rows="5" paginator="true" widgetVar="personTable2" var="medicacaoPresc">
+                    <p:column style="text-align: center" headerText="Operação" width="100">
+                       
+                        <p:commandButton style="font-size: 17px" icon="fa fa-pencil" action="#{medicacaoBean.editarPresc(medicacaoPresc)}" update="@form"></p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="&nbsp;Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                            <p:commandButton value="&nbsp;Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-close" />
+                        </p:confirmDialog>
+                         <p:commandButton style="font-size: 17px" icon="fa fa-trash-o" actionListener="#{medicacaoBean.deletarPresc(medicacaoPresc)}" update="@form">
+                            <p:confirm header="Confirmação" message="Deseja mesmo remover a prescrição?" icon="ui-icon-alert">
+                            </p:confirm>
+                        </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Prescrição" sortBy="#{medicacaoPresc.medicacao}">
+                        <h:outputText value="#{medicacaoPresc.medicacao}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Código" sortBy="#{medicacaoPresc.codigoPresc}">
+                        <h:outputText value="#{medicacaoPresc.codigoPresc}"></h:outputText>
+                    </p:column>
+                </p:dataTable>
+                <br/>
+            </p:fieldset>
+                <br/>
+    
+            <p:fieldset legend="Cadastro de Posologia" style="background: #eee">
+                <p:panelGrid class="panelForm" styleClass="panelColumns">
+                    <p:row>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="pos" value="Posologia"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <h:outputLabel for="codPos" value="Código:"/>
+                        </p:column>
+                    </p:row>
+                    <p:row class="panelLinha" style="background: #ddd">
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="pos" style="width: 185px" maxlength="30" value="#{medicacaoBean.medic.posologia}"/>
+                        </p:column>
+                        <p:column style="background: #eee; border: none">
+                            <p:inputText id="codPos" disabled="#{medicacaoBean.modo_edicaoPos == true}" style="width: 185px" maxlength="30" value="#{medicacaoBean.medic.codigoPos}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <br/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton icon="fa fa-save" value="&nbsp;Salvar" action="#{medicacaoBean.adicionarPos()}" ajax="true" update="@form"></p:commandButton>
+                        <p:commandButton icon="fa fa-close" value="&nbsp;Cancelar" action="#{medicacaoBean.cancelarPos()}" ajax="true" update="@form"></p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br/>
+                <p:dataTable id="tblPos" value="#{medicacaoBean.medicacoesPos}" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selectionMode="single" rowKey="#{medicacaoPos.idPosologia}" rows="5" paginator="true" widgetVar="personTable" var="medicacaoPos">
+                    <p:column style="text-align: center" headerText="Operação" width="100">
+                        <p:commandButton style="font-size: 17px" icon="fa fa-pencil" action="#{medicacaoBean.editarPos(medicacaoPos)}" update="@form"></p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="&nbsp;Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                            <p:commandButton value="&nbsp;Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-close" />
+                        </p:confirmDialog>
+                        <p:commandButton style="font-size: 17px" icon="fa fa-trash-o" actionListener="#{medicacaoBean.deletarPos(medicacaoPos)}" update="@form">
+                            <p:confirm header="Confirmação" message="Deseja mesmo remover a posologia?" icon="ui-icon-alert">
+                            </p:confirm>
+                        </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Posologia" sortBy="#{medicacaoPos.posologia}">
+                        <h:outputText value="#{medicacaoPos.posologia}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Código" sortBy="#{medicacaoPos.codigoPos}">
+                        <h:outputText value="#{medicacaoPos.codigoPos}"></h:outputText>
+                    </p:column>
+                </p:dataTable>
+                <br/>
+            </p:fieldset>
+        </div>
+        <p:idleMonitor timeout="1200000">
+            <p:ajax event="idle" listener="#{pacienteBean.reload()}" update="messages"/> 
+        </p:idleMonitor>
+    </h:form>
+
+</ui:decorate>
