@@ -20,10 +20,9 @@ Este sistema foi desenvolvido para facilitar a prescrição médica, controle de
   
 ## Tecnologias Utilizadas
 
-- **Frontend**: React, HTML, CSS
-- **Backend**: Node.js, Express
-- **Banco de Dados**: MongoDB (para armazenamento de prescrições, pacientes, e registros de entrega)
-- **Autenticação**: JWT (JSON Web Tokens) para segurança na autenticação de usuários (médicos, farmacêuticos, pacientes)
+- **Frontend**: HTML, CSS
+- **Backend**: Java
+- **Banco de Dados**: SQLite (para armazenamento de prescrições, pacientes, e registros de entrega)
   
 ## Instalação
 
